@@ -101,7 +101,7 @@ app.post("/send_mail",async (req,res)=>{
             }
           }
 
-        u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/VIPRSVP.jpg?alt=media&token=d81ad1bf-c521-4517-b189-230f61e2a9f3'
+        u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/VIPRSVP2.jpg?alt=media&token=0cf5ab03-0229-4b14-8c52-54cfa07cd61b'
       }
       else if(type === 'Guest'){
         opts = {
@@ -113,7 +113,7 @@ app.post("/send_mail",async (req,res)=>{
             }
           }
 
-          u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/GuestRSVP.jpg?alt=media&token=65b5feb5-8a5b-46fb-b463-12d47dbb95ea'
+          u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/GuestRSVP2.jpg?alt=media&token=84191375-7084-49f7-868e-833b5f2bbfc7'
       }
       else if(type === 'Media'){
         opts = {
@@ -124,7 +124,7 @@ app.post("/send_mail",async (req,res)=>{
             }
           }
 
-          u= 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/MediaRSVP.jpg?alt=media&token=eda31239-98b2-4396-b132-5d6100dada76'
+          u= 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/MediaRSVP2.jpg?alt=media&token=7f0687ad-beda-4b98-b3e8-b0523db702b1'
       }
 
 
