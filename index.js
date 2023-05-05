@@ -77,6 +77,8 @@ app.post("/send_mail",async (req,res)=>{
 
     var u = ''
 
+    var head = ''
+
 
     console.log(type)
 
@@ -98,6 +100,8 @@ app.post("/send_mail",async (req,res)=>{
               light:"#FFFFFFFF"
             }
           }
+
+        u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/vipqr.png?alt=media&token=e07f897d-a6c2-4fde-8757-fe17343d3934'
       }
       else if(type === 'Guest'){
         opts = {
@@ -108,6 +112,8 @@ app.post("/send_mail",async (req,res)=>{
               light:"#FFFFFFFF"
             }
           }
+
+          u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/guestqr.png?alt=media&token=76f94252-4e6c-4ded-a0d7-f78296a0c025'
       }
       else if(type === 'Media'){
         opts = {
@@ -117,27 +123,74 @@ app.post("/send_mail",async (req,res)=>{
               light:"#FFFFFFFF"
             }
           }
+
+          u= 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/mediaqr.png?alt=media&token=c4c736a2-3bab-4ebf-936f-9d8ad90996fe'
       }
 
 
-    QRCode.toDataURL(type,opts, function (err, url) {
-        if(err) return console.log("error occurred")
-        console.log(url)
-        u = url
+    // QRCode.toDataURL(type,opts, function (err, url) {
+    //     if(err) return console.log("error occurred")
+    //     // console.log(url)
+    //     u = url
 
+
+    // })
+
+
+
+
+
+    const trans = nodemailer.createTransport({
+        host: MAIL_HOST,
+        port: MAIL_PORT,
+        auth: {
+            user: MAIL_USER,
+            pass: MAIL_PASS
+        },
+        tls: {
+            secureProtocol: "TLSv1_method"
+        }
+        
+    })
+
+        const client = Sib.ApiClient.instance
+    
+    const apiKey = client.authentications['api-key']
+    apiKey.apiKey = process.env.API_KEY
+    
+    const sender = {
+        email: 'rsvpevent@thehanginghouse.com',
+        name: 'GEELY SMART',
+        // name: 'Anjan Shomodder',
+    }
+    
+    const recivers = [
+        {
+            email: email,
+        },
+    ]
+
+    
+    const pre = email.split("@");
+
+    console.log(pre[1], " ", email)
+
+    
+    const transactionalEmailApi = new Sib.TransactionalEmailsApi()
+    let src;
+
+    if(pre[1]==='gmail.com'){
         transactionalEmailApi
         .sendTransacEmail({
             subject: 'Geely Invitation Email',
             sender,
             to: recivers,
             // textContent: `Cules Coding will teach you how to become a {{params.role}} developer.`,
-            htmlContent: `<!DOCTYPE html>
-            <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+            htmlContent: `<html>
             
             <head>
                 <title></title>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0"><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]--><!--[if !mso]><!-->
                     <link rel="preconnect" href="https://fonts.googleapis.com">
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
@@ -251,7 +304,7 @@ app.post("/send_mail",async (req,res)=>{
                                                                 <table class="image_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
                                                                     <tr>
                                                                         <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
-                                                                            <div class="alignment" align="center" style="line-height:10px"><img class="big" src="https://c140c4ec68.imgdist.com/public/users/Integrators/BeeProAgency/914968_899312/Screenshot%202023-05-04%20172524.png" style="display: block; height: auto; border: 0; width: 600px; max-width: 100%;" width="600"></div>
+                                                                            <div class="alignment" align="center" style="line-height:10px"><img class="big" src='https://c140c4ec68.imgdist.com/public/users/Integrators/BeeProAgency/914968_899312/Screenshot%202023-05-04%20172524.png' style="display: block; height: auto; border: 0; width: 600px; max-width: 100%;" width="600"></div>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -350,7 +403,7 @@ app.post("/send_mail",async (req,res)=>{
                                                                     <tr>
                                                                         <td class="pad">
                                                                             <div class="alignment" align="center">
-                                                                                <img width="200px" height="200px" src=${url}/>
+                                                                                <img width="200px" height="200px" src=${u}/>
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -403,47 +456,302 @@ app.post("/send_mail",async (req,res)=>{
         }
         ).then(console.log)
         .catch(console.log)
+    }else{
+
+    loadBase64Image('https://c140c4ec68.imgdist.com/public/users/Integrators/BeeProAgency/914968_899312/Screenshot%202023-05-04%20172524.png', function (image, prefix) { 
+        head = prefix + image
+
+        loadBase64Image(u, function (image, prefix) {
+            src = prefix + image;
+    
+            console.log(src)
+    
+            transactionalEmailApi
+            .sendTransacEmail({
+                subject: 'Geely Invitation Email',
+                sender,
+                to: recivers,
+                // textContent: `Cules Coding will teach you how to become a {{params.role}} developer.`,
+                htmlContent: `<html>
+                
+                <head>
+                    <title></title>
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                        <link rel="preconnect" href="https://fonts.googleapis.com">
+                        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+                    <style>
+                        * {
+                            box-sizing: border-box;
+                        }
+                
+                        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+                
+                        *, body {
+                            font-family: 'Open Sans', sans-serif;
+                            -webkit-font-smoothing: antialiased;
+                            text-rendering: optimizeLegibility;
+                            -moz-osx-font-smoothing: grayscale;
+                            
+                        }
+                
+                        body {
+                            margin: 0;
+                            padding: 0;
+                        }
+                
+                        a[x-apple-data-detectors] {
+                            color: inherit !important;
+                            text-decoration: inherit !important;
+                        }
+                
+                        #MessageViewBody a {
+                            color: inherit;
+                            text-decoration: none;
+                        }
+                
+                        p {
+                            line-height: inherit
+                        }
+                
+                        .desktop_hide,
+                        .desktop_hide table {
+                            mso-hide: all;
+                            display: none;
+                            max-height: 0px;
+                            overflow: hidden;
+                        }
+                
+                        .image_block img+div {
+                            display: none;
+                        }
+                
+                        @media (max-width:620px) {
+                            .desktop_hide table.icons-inner {
+                                display: inline-block !important;
+                            }
+                
+                            .icons-inner {
+                                text-align: center;
+                            }
+                
+                            .icons-inner td {
+                                margin: 0 auto;
+                            }
+                
+                            .image_block img.big,
+                            .row-content {
+                                width: 100% !important;
+                            }
+                
+                            .mobile_hide {
+                                display: none;
+                            }
+                
+                            .stack .column {
+                                width: 100%;
+                                display: block;
+                            }
+                
+                            .mobile_hide {
+                                min-height: 0;
+                                max-height: 0;
+                                max-width: 0;
+                                overflow: hidden;
+                                font-size: 0px;
+                            }
+                
+                            .desktop_hide,
+                            .desktop_hide table {
+                                display: table !important;
+                                max-height: none !important;
+                            }
+                
+                            .row-1 .column-1 .block-1.image_block td.pad {
+                                padding: 0 !important;
+                            }
+                        }
+                    </style>
+                </head>
+                
+                <body style="background-color: transparent; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+                    <table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: transparent;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table class="row row-1" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 600px;" width="600">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left;  vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                                                    <table class="image_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                                                        <tr>
+                                                                            <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
+                                                                                <div class="alignment" align="center" style="line-height:10px"><img class="big" src=${head} style="display: block; height: auto; border: 0; width: 600px; max-width: 100%;" width="600"></div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="row row-2" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #002d96; color: #000000; width: 600px;" width="600">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                                                    <table class="text_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                                                        <tr>
+                                                                            <td class="pad" style="padding-bottom:10px;padding-left:30px;padding-right:10px;padding-top:30px;">
+                                                                                <div>
+                                                                                    <div class style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #000000; line-height: 1.2; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                                                                        <p style="margin: 0; font-size: 16px; text-align: center; font-weight: 100; mso-line-height-alt: 16.8px;"><span style="font-size:20px;color:#ffffff;letter-spacing: 3px;">THANK YOU FOR REGISTERING</span></p>
+                                                                                        <p style="margin: 0; mso-line-height-alt: 14.399999999999999px; margin-top: 5px;"><span style="letter-spacing: 2px;font-size:11px;color:#ffffff;font-weight:300">We look foward to seeing you where the future flows.</span></p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <table class="text_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                                                        <tr>
+                                                                            <td class="pad" style="padding-bottom:10px;padding-left:30px;padding-right:10px;padding-top:10px;">
+                                                                                <div >
+                                                                                    <div class style="font-size: 12px;  mso-line-height-alt: 14.399999999999999px; color: #000000; line-height: 1.2; display: flex; justify-content: center; align-items: center;">
+                                                    
+                                                                                        
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <table class="text_block block-3" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                                                        <tr>
+                                                                            <td class="pad" style="padding-bottom:15px;padding-left:30px;padding-right:10px;padding-top:30px;">
+                
+                                                                                    <div style="display: flex; justify-content: center; align-items: center; height: 20px; margin: 0; color:white">
+                                                                                        <div style="padding-right: 10px; border-right: 1px solid white; font-size: 17px;">
+                                                                                            <p style="margin: 0;letter-spacing: 3px;">
+                                                                                                May 17, 2023
+                                                                                            </p>
+                                                                                        </div>
+                
+                                                                                        <div style="padding-left: 10px; font-size: 17px;">
+                                                                                            <p style="margin: 0; letter-spacing: 3px;">
+                                                                                                6 PM - 11:30 PM
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                
+                                                                                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 50px; margin: 0; color:white; margin-top: 20px;">
+                                                                                        <div>
+                                                                                            <p style="margin: 0; font-size: 25px;letter-spacing: 3px;">
+                                                                                                DEIRA SHOWROOM
+                                                                                            </p>
+                                                                                        </div>
+                
+                                                                                        <div >
+                                                                                            <p style="margin: 0; font-size: 11px;letter-spacing: 3px;">
+                                                                                                DUBAI
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="row row-3" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #002d96; color: #000000; width: 600px;" width="600">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="column column-1" width="50%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                                                    <table class="button_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                                                        <tr>
+                                                                            <td class="pad">
+                                                                                <div class="alignment" align="center">
+                                                                                    <img width="200px" height="200px" src=${src}/>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="row row-4" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #002d96; color: #000000; width: 600px;" width="600">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                                                    <table class="icons_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                                                        <tr>
+                                                                            <td class="pad" style="vertical-align: middle; color: #9d9d9d; font-family: inherit; font-size: 15px; padding-bottom: 5px; padding-top: 5px; text-align: center;">
+                                                                                <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                                                                    <tr>
+                                                                                        <td class="alignment" style="vertical-align: middle; text-align: center;"><!--[if vml]><table align="left" cellpadding="0" cellspacing="0" role="presentation" style="display:inline-block;padding-left:0px;padding-right:0px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;"><![endif]-->
+                                                                                            <!--[if !vml]><!-->
+                                                                                            
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table><!-- End -->
+                </body>
+                
+                </html>`
+            }
+            ).then(console.log)
+            .catch(console.log)
+    
+        })
     })
 
-
-    const trans = nodemailer.createTransport({
-        host: MAIL_HOST,
-        port: MAIL_PORT,
-        auth: {
-            user: MAIL_USER,
-            pass: MAIL_PASS
-        },
-        tls: {
-            secureProtocol: "TLSv1_method"
-        }
-        
-    })
-
-        const client = Sib.ApiClient.instance
-    
-    const apiKey = client.authentications['api-key']
-    apiKey.apiKey = process.env.API_KEY
-    
-    const sender = {
-        email: 'rsvpevent@thehanginghouse.com',
-        name: 'GEELY SMART',
-        // name: 'Anjan Shomodder',
     }
-    
-    const recivers = [
-        {
-            email: email,
-        },
-    ]
 
-    
-    const pre = email.split("@");
 
-    console.log(pre[1], " ", email)
 
-    
-    const transactionalEmailApi = new Sib.TransactionalEmailsApi()
-    let src;
+
+
 
 
 
