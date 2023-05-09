@@ -461,7 +461,7 @@ app.post("/send_mail",async (req,res)=>{
 
         transactionalEmailApi
         .sendTransacEmail({
-            subject: 'Geely Invitation Email',
+            subject: 'Geely Showroom Launch- Confirmation',
             sender,
             to: recivers,
             // textContent: `Cules Coding will teach you how to become a {{params.role}} developer.`,
