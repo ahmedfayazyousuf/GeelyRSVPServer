@@ -101,7 +101,7 @@ app.post("/send_mail",async (req,res)=>{
             }
           }
 
-        u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/VIPRSVP3.jpg?alt=media&token=99045586-26e0-4533-b287-ed4eb3e120cd1'
+        u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/MediaRSVP3.jpg?alt=media&token=22b3548b-62f3-4474-bb48-343559830079'
       }
       else if(type === 'Guest'){
         opts = {
@@ -124,7 +124,9 @@ app.post("/send_mail",async (req,res)=>{
             }
           }
 
-          u= 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/MediaRSVP3.jpg?alt=media&token=22b3548b-62f3-4474-bb48-343559830079'
+          u= 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/VIPRSVP3.jpg?alt=media&token=99045586-26e0-4533-b287-ed4eb3e120cd1'
+
+          
       }
 
 
