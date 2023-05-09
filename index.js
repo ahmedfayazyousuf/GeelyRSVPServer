@@ -101,7 +101,7 @@ app.post("/send_mail",async (req,res)=>{
             }
           }
 
-        u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/MediaRSVP3.jpg?alt=media&token=22b3548b-62f3-4474-bb48-343559830079'
+        u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/VIPPNEWW.png?alt=media&token=34c6783b-e7df-4e77-9df8-5bcad08b0f06'
       }
       else if(type === 'Guest'){
         opts = {
