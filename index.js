@@ -101,7 +101,7 @@ app.post("/send_mail",async (req,res)=>{
             }
           }
 
-        u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/VIPRSVP3.jpg?alt=media&token=99045586-26e0-4533-b287-ed4eb3e120cd1'
+        u = 'https://firebasestorage.googleapis.com/v0/b/xtrailgame-b9f5c.appspot.com/o/VIPNEWCONFIRMATION.jpg?alt=media&token=b6332bf9-b014-4740-8439-59f48ac42cbd'
       }
       else if(type === 'Guest'){
         opts = {
@@ -113,7 +113,7 @@ app.post("/send_mail",async (req,res)=>{
             }
           }
 
-          u = 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/GuestRSVP3.jpg?alt=media&token=ab254f48-1b29-476c-bacd-a8ed0e8fb0ef'
+          u = 'https://firebasestorage.googleapis.com/v0/b/xtrailgame-b9f5c.appspot.com/o/GUESTNEWCONFIRM.jpg?alt=media&token=c8d75918-8798-41d0-9772-f41312105844'
       }
       else if(type === 'Media'){
         opts = {
@@ -124,7 +124,9 @@ app.post("/send_mail",async (req,res)=>{
             }
           }
 
-          u= 'https://firebasestorage.googleapis.com/v0/b/assetuploadformbuilder.appspot.com/o/MediaRSVP3.jpg?alt=media&token=22b3548b-62f3-4474-bb48-343559830079'
+          u= 'https://firebasestorage.googleapis.com/v0/b/xtrailgame-b9f5c.appspot.com/o/MEDIANEWCONFIRMATION.jpg?alt=media&token=5a34970b-4244-4e9a-94d8-bbba733ff0bf'
+
+          
       }
 
 
@@ -459,7 +461,7 @@ app.post("/send_mail",async (req,res)=>{
 
         transactionalEmailApi
         .sendTransacEmail({
-            subject: 'Geely Invitation Email',
+            subject: 'Geely Showroom Launch - Confirmation',
             sender,
             to: recivers,
             // textContent: `Cules Coding will teach you how to become a {{params.role}} developer.`,
@@ -877,7 +879,7 @@ app.post("/send_mail",async (req,res)=>{
 
             transactionalEmailApi
             .sendTransacEmail({
-                subject: 'Geely Invitation Email',
+                subject: 'Geely Showroom Launch - Confirmation',
                 sender,
                 to: recivers,
                 // textContent: `Cules Coding will teach you how to become a {{params.role}} developer.`,
