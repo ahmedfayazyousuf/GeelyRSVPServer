@@ -160,8 +160,8 @@ app.post("/send_mail",async (req,res)=>{
     
     const sender = {
         email: 'rsvpevent@thehanginghouse.com',
-        name: 'GEELY SMART',
-        // name: 'Anjan Shomodder',
+        name: 'GEELY UAE',
+
     }
     
     const recivers = [
